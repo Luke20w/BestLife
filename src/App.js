@@ -62,7 +62,7 @@ export default function App() {
               <Switch>
                 <Route exact path="/" render={() => <Redirect to="/sign-in" />} />
                 <Route path="/sign-in">
-                  <SignInPage alert={alert} />
+                  <SignInPage client={client} alert={alert} />
                 </Route>
                 <Route path="/home">
                   <HomePage />

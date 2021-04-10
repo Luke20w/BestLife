@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
-import { Refresh } from "@heroicons/react";
 
+import { USER } from "../service/graphql";
 import { Button, Input } from "../components/base/components";
 
 export default function SignInPage(props) {
@@ -10,26 +10,31 @@ export default function SignInPage(props) {
   const history = useHistory();
 
   // State variables
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   // Call to the backend to sign in
-  function signIn(e) {
-    setIsLoading(true);
+  async function signIn(e) {
+    e.preventDefault();
 
-    // sign in
-    // const expires = new Date();
-    // expires.setTime(expires.getTime + 7 * 24 * 60 * 60 * 1000 - 60000);
-    // cookies.set("token", body.data.authToken, { path: "/", expires });
-    // cookies.set("user", body.data.user, { path: "/", expires });
-    // cookies.set("role", body.data.role, { path: "/", expires });
-    // history.push("/manage-lessons");
+    const user = (
+      await props.client.query({
+        query: USER,
+        variables: {
+          email: email,
+          password: password,
+        },
+      })
+    ).data.user;
 
-    // fail
-    props.alert("Sign In failed", "Your username/email and/or password are incorrect", "red");
-
-    setIsLoading(false);
+    if (user) {
+      const expires = new Date();
+      expires.setTime(expires.getTime + 7 * 24 * 60 * 60 * 1000 - 60000);
+      cookies.set("user", user, { path: "/", expires });
+      history.push("/home");
+    } else {
+      props.alert("Sign In failed", "Your email and/or password are incorrect", "red");
+    }
   }
 
   return (
@@ -38,10 +43,10 @@ export default function SignInPage(props) {
         <p className="text-3xl font-bold mr-40">Sign in to your account</p>
         <div className="my-5" />
         <form className="flex flex-col gap-2" onSubmit={signIn}>
-          <Input title="Username" placeholder="username" value={user} setValue={setUser} />
+          <Input title="Email" placeholder="george1@gatech.edu" value={email} setValue={setEmail} />
           <Input type="password" title="Password" placeholder="password" value={password} setValue={setPassword} />
           <Button type="submit" className="mt-10">
-            {isLoading ? null : <p>Sign In</p>}
+            <p>Sign In</p>
           </Button>
         </form>
       </div>
