@@ -9,3 +9,27 @@ export const USER = gql`
     }
   }
 `;
+
+export const ENTRIES = gql`
+  query($userId: ObjectId!) {
+    entries(query: { userId: $userId }) {
+      _id
+      userId
+      date
+      stress
+      activity
+      socail
+      nutrition
+      sleep
+      spirituality
+    }
+  }
+`;
+
+export const INSERT_ENTRY = gql`
+  mutation($data: EntryInsertInput!) {
+    insertOneEntry(data: $data) {
+      _id
+    }
+  }
+`;

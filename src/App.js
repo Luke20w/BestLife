@@ -2,7 +2,6 @@ import { useState } from "react";
 import * as Realm from "realm-web";
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import Cookies from "universal-cookie";
 
 import { Alert } from "./components/base/components";
 
@@ -35,11 +34,6 @@ async function getValidAccessToken() {
 }
 
 export default function App() {
-  // Cookies for user authentication
-  const cookies = new Cookies();
-
-  // State variables
-
   // Alert state variables
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertTitle, setAlertTitle] = useState("");
@@ -65,7 +59,7 @@ export default function App() {
                   <SignInPage client={client} alert={alert} />
                 </Route>
                 <Route path="/home">
-                  <HomePage />
+                  <HomePage client={client} />
                 </Route>
               </Switch>
             </div>
