@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Modal, Button } from "./components/base/components";
+import { Modal, Button } from "../components/base/components";
 
 export default function HomePage(props) {
   const [formModalIsOpen, setFormModalIsOpen] = useState(false);
