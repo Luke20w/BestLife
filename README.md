@@ -1,3 +1,7 @@
+# About BestLife
+
+Health is one of the most important factors to a functioning society. BestLife aims to help individuals track a large variety of factors (stress, physical activity, social activity, nutrition, etc.) on a weekly basis. Then, users can visualize these habits in a HeatMap across the number of weeks they have submitted the form.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
