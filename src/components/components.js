@@ -11,6 +11,7 @@ import CheckBoxInput from "./CheckBoxInput";
 import Card from "./Card";
 import PulseIndicator from "./PulseIndicator";
 import Header from "./Header";
+import HeatMap from "./HeatMap";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   Card,
   PulseIndicator,
   Header,
+  HeatMap,
 };

@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import "rsuite/dist/styles/rsuite-default.css";
 
 import { ENTRIES, INSERT_ENTRY } from "../service/graphql";
-import { Modal, Button, HealthFactor } from "../components/components";
+import { Modal, Button, HealthFactor, HeatMap } from "../components/components";
 
 export default function HomePage(props) {
   // Cookies for user authentication
@@ -22,7 +22,7 @@ export default function HomePage(props) {
   const [formModalIsOpen, setFormModalIsOpen] = useState(false);
 
   useEffect(() => {
-    if (cookies.get("user")) setEntries(getEntries());
+    if (cookies.get("user")) getEntries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,7 +31,7 @@ export default function HomePage(props) {
   }, [entries]);
 
   async function getEntries() {
-    return (
+    const entriesData = (
       await props.client.query({
         query: ENTRIES,
         variables: {
@@ -39,6 +39,7 @@ export default function HomePage(props) {
         },
       })
     ).data.entries;
+    setEntries(entriesData);
   }
 
   async function insertEntry() {
@@ -58,8 +59,14 @@ export default function HomePage(props) {
       },
     });
     setEntries(getEntries());
-    props.alert("Your entry is in!", "Your health data should be updated and ready to go");
+    props.alert("Your entry is in!", "Your health data should be updated and ready to go", "green");
   }
+
+  const values = [
+    [0, 3, 5, 7, 2],
+    [6, 7, 3, 7, 9],
+    [1, 5, 9, 4, 8],
+  ];
 
   return (
     <div className="flex-1 p-10">
@@ -69,6 +76,7 @@ export default function HomePage(props) {
           New Week Entry
         </Button>
       </div>
+      <HeatMap values={values} />
       <Modal
         isOpen={formModalIsOpen}
         title="New Week Entry"
