@@ -2,7 +2,7 @@ export default function HeatMap(props) {
   const factors = ["Stress", "Activity", "Socail", "Nutrition", "Sleep", "Spirituality"];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ml-10">
       {props.values.map((values, row) => (
         <div key={row} className="flex gap-5 items-center">
           <p style={{ paddingTop: row === 0 ? 85 : 0 }}>{`Week ${row + 1}`}</p>
