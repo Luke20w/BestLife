@@ -13,7 +13,6 @@ export default function SignInPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Call to the backend to sign in
   async function signIn(e) {
     e.preventDefault();
 
@@ -48,6 +47,12 @@ export default function SignInPage(props) {
           <Button type="submit" className="mt-10">
             <p>Sign In</p>
           </Button>
+          <p
+            className="font-bold mt-2 hover:text-indigo-600 cursor-pointer"
+            onClick={() => history.push("/create-account")}
+          >
+            Dont have an account? Create One
+          </p>
         </form>
       </div>
     </div>

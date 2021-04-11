@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import "rsuite/dist/styles/rsuite-default.css";
+import { useQuery, useMutation } from "@apollo/client";
 
 import { ENTRIES, INSERT_ENTRY } from "../service/graphql";
 import { Modal, Button, HealthFactor, HeatMap } from "../components/components";
@@ -11,6 +12,7 @@ export default function HomePage(props) {
 
   // State variables
   const [entries, setEntries] = useState([]);
+  const [values, setValues] = useState([]);
   const [stress, setStress] = useState(0);
   const [activity, setActivity] = useState(0);
   const [social, setSocial] = useState(0);
@@ -21,56 +23,58 @@ export default function HomePage(props) {
   // UI State variables
   const [formModalIsOpen, setFormModalIsOpen] = useState(false);
 
+  // Queries
+  const { data: entriesData, refetch: refetchEntries } = useQuery(ENTRIES, {
+    variables: {
+      userId: cookies.get("user")._id,
+    },
+  });
+
+  // Mutations
+  const [insertEntry] = useMutation(INSERT_ENTRY, {
+    variables: {
+      data: {
+        userId: cookies.get("user")._id,
+        date: new Date(),
+        stress: stress,
+        activity: activity,
+        social: social,
+        nutrition: nutrition,
+        sleep: sleep,
+        spirituality: spirituality,
+      },
+    },
+    onCompleted: () => {
+      refetchEntries();
+      props.alert("Your entry is in!", "Your health data should be updated and ready to go", "green");
+    },
+  });
+
   useEffect(() => {
-    if (cookies.get("user")) getEntries();
+    if (cookies.get("user") && entriesData) setEntries(entriesData.entries);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [entriesData]);
 
   useEffect(() => {
     console.log(entries);
+    let values = [];
+    for (const entry of entries) {
+      let row = [];
+      row.push(entry.stress);
+      row.push(entry.activity);
+      row.push(entry.social);
+      row.push(entry.nutrition);
+      row.push(entry.sleep);
+      row.push(entry.spirituality);
+      values.push(row);
+    }
+    setValues(values);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entries]);
-
-  async function getEntries() {
-    const entriesData = (
-      await props.client.query({
-        query: ENTRIES,
-        variables: {
-          userId: cookies.get("user")._id,
-        },
-      })
-    ).data.entries;
-    setEntries(entriesData);
-  }
-
-  async function insertEntry() {
-    await props.client.mutate({
-      mutation: INSERT_ENTRY,
-      variables: {
-        data: {
-          userId: cookies.get("user")._id,
-          date: new Date(),
-          stress: stress,
-          activity: activity,
-          social: social,
-          nutrition: nutrition,
-          sleep: sleep,
-          spirituality: spirituality,
-        },
-      },
-    });
-    setEntries(getEntries());
-    props.alert("Your entry is in!", "Your health data should be updated and ready to go", "green");
-  }
-
-  const values = [
-    [0, 3, 5, 7, 2],
-    [6, 7, 3, 7, 9],
-    [1, 5, 9, 4, 8],
-  ];
 
   return (
     <div className="flex-1 p-10">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mb-10">
         <p className="text-5xl font-black">Welcome to BestLife!</p>
         <Button onClick={() => setFormModalIsOpen(true)} shade={100}>
           New Week Entry
