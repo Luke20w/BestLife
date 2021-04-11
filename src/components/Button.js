@@ -14,7 +14,7 @@ export default function Button(props) {
       {...props}
       className={
         props.className +
-        ` p-2 font-medium focus:outline-none flex items-center gap-1 justify-center
+        ` p-2 font-bold focus:outline-none flex items-center gap-1 justify-center
         ${
           props.type === "text"
             ? ` ${

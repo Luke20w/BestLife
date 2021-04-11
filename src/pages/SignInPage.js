@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 
 import { USER } from "../service/graphql";
-import { Button, Input } from "../components/base/components";
+import { Button, Input } from "../components/components";
 
 export default function SignInPage(props) {
   const cookies = new Cookies();

@@ -3,7 +3,7 @@ import * as Realm from "realm-web";
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-import { Alert } from "./components/base/components";
+import { Alert, Header } from "./components/components";
 
 import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
@@ -53,13 +53,19 @@ export default function App() {
         <ApolloProvider client={client}>
           <Router>
             <div className="flex-1 flex flex-col">
+              <Header
+                pages={{
+                  Home: "/home",
+                }}
+                blackList={"/sign-in"}
+              />
               <Switch>
                 <Route exact path="/" render={() => <Redirect to="/sign-in" />} />
                 <Route path="/sign-in">
                   <SignInPage client={client} alert={alert} />
                 </Route>
                 <Route path="/home">
-                  <HomePage client={client} />
+                  <HomePage client={client} alert={alert} />
                 </Route>
               </Switch>
             </div>

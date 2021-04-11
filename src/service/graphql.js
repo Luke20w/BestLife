@@ -18,7 +18,7 @@ export const ENTRIES = gql`
       date
       stress
       activity
-      socail
+      social
       nutrition
       sleep
       spirituality

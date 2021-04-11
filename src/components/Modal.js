@@ -1,4 +1,4 @@
-import { Button } from "../base/components";
+import { Button } from "./components";
 
 export default function Modal(props) {
   if (props.isOpen) {
