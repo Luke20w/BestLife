@@ -7,6 +7,7 @@ import { Alert, Header } from "./components/components";
 
 import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
+import CreateAccountPage from "./pages/CreateAccountPage";
 
 // Connect to Apollo GraphQL
 const graphql_url = `https://realm.mongodb.com/api/client/v2.0/app/${process.env.REACT_APP_REALM_APP_ID}/graphql`;
@@ -57,15 +58,18 @@ export default function App() {
                 pages={{
                   Home: "/home",
                 }}
-                blackList={"/sign-in"}
+                blackList={["/sign-in", "/create-account"]}
               />
               <Switch>
                 <Route exact path="/" render={() => <Redirect to="/sign-in" />} />
                 <Route path="/sign-in">
                   <SignInPage client={client} alert={alert} />
                 </Route>
+                <Route path="/create-account">
+                  <CreateAccountPage alert={alert} />
+                </Route>
                 <Route path="/home">
-                  <HomePage client={client} alert={alert} />
+                  <HomePage alert={alert} />
                 </Route>
               </Switch>
             </div>

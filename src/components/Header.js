@@ -14,7 +14,7 @@ export default function Header(props) {
 
   // Redirect the user back to sign in if they are not signed in
   useEffect(() => {
-    if (!cookies.get("user") && location.pathname !== "/sign-in") {
+    if (!cookies.get("user") && !props.blackList.includes(location.pathname)) {
       history.push("/sign-in");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

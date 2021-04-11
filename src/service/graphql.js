@@ -33,3 +33,11 @@ export const INSERT_ENTRY = gql`
     }
   }
 `;
+
+export const INSERT_USER = gql`
+  mutation($data: UserInsertInput!) {
+    insertOneUser(data: $data) {
+      _id
+    }
+  }
+`;
